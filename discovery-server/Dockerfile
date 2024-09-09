@@ -8,7 +8,7 @@ WORKDIR /app
 COPY target/discovery-server-0.0.1-SNAPSHOT.jar /app/discovery-server-0.0.1-SNAPSHOT.jar
 
 # Exponer el puerto del contenedor (cambiar si es necesario)
-EXPOSE 8080
+EXPOSE 8761
 
 # Comando para ejecutar la aplicación
 ENTRYPOINT ["java", "-jar", "/app/discovery-server.jar"]

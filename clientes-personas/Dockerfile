@@ -8,7 +8,7 @@ WORKDIR /app
 COPY target/clientes-personas-0.0.1-SNAPSHOT.jar /app/clientes-personas-0.0.1-SNAPSHOT.jar
 
 # Exponer el puerto del contenedor (cambiar si es necesario)
-EXPOSE 8080
+EXPOSE 8083
 
 # Comando para ejecutar la aplicación
 ENTRYPOINT ["java", "-jar", "/app/clientes-personas.jar"]

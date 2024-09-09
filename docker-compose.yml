@@ -1,0 +1,74 @@
+version: '3.8'
+services:
+  api-gateway:
+    image: api-gateway-image 
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - discovery-server
+    environment:
+      - EUREKA_SERVER_URL=http://discovery-server:8761/eureka/
+    networks:
+      - microservices-net
+
+  discovery-server:
+    image: discovery-server-image 
+    container_name: discovery-server
+    ports:
+      - "8761:8761"
+    networks:
+      - microservices-net
+
+  clientes-personas:
+    image: clientes-personas-image 
+    container_name: clientes-personas
+    ports:
+      - "8083:8083"
+    depends_on:
+      - discovery-server
+      - db
+    environment:
+      - EUREKA_SERVER_URL=http://discovery-server:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/db_tata
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=leo
+    networks:
+      - microservices-net
+
+  cuentas-movimientos:
+    image: cuentas-movimientos-image # Imagen de tu servicio de cuentas-movimientos
+    container_name: cuentas-movimientos
+    ports:
+      - "8084:8084"
+    depends_on:
+      - discovery-server
+      - db
+    environment:
+      - EUREKA_SERVER_URL=http://discovery-server:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/db_tata
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=leo
+    networks:
+      - microservices-net
+
+  db:
+    image: postgres:latest
+    container_name: postgres-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: leo
+      POSTGRES_DB: db_tata
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - microservices-net
+
+networks:
+  microservices-net:
+    driver: bridge
+
+volumes:
+  postgres-data:

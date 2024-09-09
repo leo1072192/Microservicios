@@ -8,7 +8,7 @@ WORKDIR /app
 COPY target/cuentas-movimientos-0.0.1-SNAPSHOT.jar /app/cuentas-movimientos-0.0.1-SNAPSHOT.jar
 
 # Exponer el puerto del contenedor (cambiar si es necesario)
-EXPOSE 8080
+EXPOSE 8084
 
 # Comando para ejecutar la aplicación
 ENTRYPOINT ["java", "-jar", "/app/cuentas-movimientos.jar"]

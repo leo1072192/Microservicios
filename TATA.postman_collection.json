@@ -1,0 +1,168 @@
+{
+	"info": {
+		"_postman_id": "e852761e-64fa-4f53-ab92-b7328554a7e7",
+		"name": "TATA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28916187"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8084/movimientos/reporte?fechaInicio=2024-09-08&fechaFin=2024-09-09&numeroCuenta=478758",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8084/movimientos/reporte?fechaInicio=2024-09-08&fechaFin=2024-09-09&numeroCuenta=478758",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"movimientos",
+						"reporte"
+					],
+					"query": [
+						{
+							"key": "fechaInicio",
+							"value": "2024-09-08"
+						},
+						{
+							"key": "fechaFin",
+							"value": "2024-09-09"
+						},
+						{
+							"key": "numeroCuenta",
+							"value": "478758"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8084/movimientos",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n    \"numeroCuenta\": \"478758\",\r\n    \"tipoMovimiento\": \"Deposito\",\r\n    \"valor\": 575\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8084/movimientos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"movimientos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8083/clientes",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"nombre\": \"Jose Lema\",\r\n    \"direccion\": \"Otavalo sn y principal\",\r\n    \"telefono\": \"098254785\",\r\n    \"contrasena\": \"1234\",\r\n    \"estado\": true\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/clientes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"clientes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8084/cuentas",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"numeroCuenta\": \"478758\",\r\n    \"tipoCuenta\": \"Ahorro\",\r\n    \"saldoInicial\": 2000,\r\n    \"estado\": true,\r\n    \"clienteid\": 1\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8084/cuentas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"cuentas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8084/movimientos",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n    \"numeroCuenta\": \"478758\",\r\n    \"tipoMovimiento\": \"Retiro\",\r\n    \"valor\": -575\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8084/movimientos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8084",
+					"path": [
+						"movimientos"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
