@@ -28,5 +28,6 @@ private Long clienteid;
     private String tipoCuenta;
     private BigDecimal  saldoInicial;
     private boolean estado;
+    private BigDecimal saldo; 
     // Getters and Setters
 }

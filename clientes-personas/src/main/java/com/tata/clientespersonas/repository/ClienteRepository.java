@@ -7,6 +7,7 @@ import com.tata.clientespersonas.model.Cliente;
 // ClienteRepository.java
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
-    Cliente findByClienteid(Long clienteid);
+    Cliente findByIdentificacion(String identificacion);
     Cliente findByNombre(String nombre); 
+    boolean existsByIdentificacion(String identificacion);
 }

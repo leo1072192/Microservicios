@@ -35,27 +35,54 @@ public class MovimientoService {
         if (cuenta == null) {
             throw new EntityNotFoundException("Cuenta no encontrada con número de cuenta: " + movimiento.getNumeroCuenta());
         }
-
-        // Verifica el saldo disponible
-        BigDecimal saldoDisponible = cuenta.getSaldoInicial();
+    
+        // Obtener el saldo antes de realizar la transacción (este será el saldo inicial para el movimiento actual)
+        BigDecimal saldoInicial = cuenta.getSaldoInicial();
+        
+        // Verifica si el valor es positivo y ajusta según el tipo de movimiento
         BigDecimal valorMovimiento = movimiento.getValor();
-
-        if (valorMovimiento.signum() == -1 && saldoDisponible.add(valorMovimiento).compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("Saldo no disponible");
+    
+        // Validar que el valor no sea negativo para depósitos y retiros
+        if (valorMovimiento.signum() <= 0) {
+            throw new IllegalArgumentException("El valor del movimiento debe ser positivo.");
         }
-
-        // Actualiza el saldo de la cuenta
-        cuenta.setSaldoInicial(saldoDisponible.add(valorMovimiento));
+    
+        BigDecimal saldoActual = saldoInicial;// Asignamos el saldo inicial como saldo actual temporalmente
+    
+        // Dependiendo del tipo de movimiento, ajusta el saldo
+        if ("deposito".equalsIgnoreCase(movimiento.getTipoMovimiento())) {
+            // Sumar el valor del depósito al saldo actual
+            saldoActual = saldoInicial.add(valorMovimiento);
+            cuenta.setSaldoInicial(saldoInicial.subtract(valorMovimiento));
+        } else if ("retiro".equalsIgnoreCase(movimiento.getTipoMovimiento())) {
+            // Verificar que hay saldo suficiente para el retiro
+            if (saldoInicial.compareTo(valorMovimiento) < 0) {
+                throw new IllegalArgumentException("Saldo insuficiente para realizar el retiro.");
+            }
+            System.out.println(saldoInicial);
+            System.out.println(valorMovimiento);
+            // Restar el valor del retiro del saldo actual
+            cuenta.setSaldoInicial(saldoInicial.add(valorMovimiento));
+            saldoActual = saldoInicial.subtract(valorMovimiento);
+        } else {
+            throw new IllegalArgumentException("Tipo de movimiento no reconocido: " + movimiento.getTipoMovimiento() + ". Solo se admite 'retiro' o 'deposito'.");
+        }
+    
+        // Actualiza el saldo actual de la cuenta después de la transacción
+        cuenta.setSaldo(saldoActual); 
+       
+        // Guarda la cuenta con el saldo actualizado
         cuentaRepository.save(cuenta);
-
-        // Asigna la cuenta al movimiento
+    
+        // Asigna la cuenta, el saldo inicial (antes de la transacción), y el nuevo saldo al movimiento
         movimiento.setCuenta(cuenta);
         movimiento.setFecha(LocalDate.now());
-        movimiento.setSaldo(cuenta.getSaldoInicial());
-
-        // Guarda el movimiento con la cuenta asociada
+        movimiento.setSaldo(saldoActual); // Establece el saldo actualizado en el movimiento
+    
+        // Guarda el movimiento
         return movimientoRepository.save(movimiento);
     }
+    
 
     public Movimiento updateMovimiento(Long id, Movimiento movimiento) {
         if (movimientoRepository.existsById(id)) {
@@ -89,6 +116,7 @@ public class MovimientoService {
     }
 
        public List<ReporteMovimientoDTO> obtenerReportePorFechasYNumeroCuenta(LocalDate fechaInicio, LocalDate fechaFin, String numeroCuenta) {
+        System.out.println(fechaInicio);
         List<Movimiento> movimientos = movimientoRepository.findByFechaBetweenAndCuenta_NumeroCuenta(fechaInicio, fechaFin, numeroCuenta);
         // Busca la cuenta por el número de cuenta
         Cuenta cuenta = cuentaRepository.findByNumeroCuenta(numeroCuenta);
@@ -101,6 +129,7 @@ public class MovimientoService {
             dto.setFecha(movimiento.getFecha());
             dto.setNumeroCuenta(movimiento.getCuenta().getNumeroCuenta());
             dto.setTipo(movimiento.getCuenta().getTipoCuenta());
+            dto.setTipoMovimiento(movimiento.getTipoMovimiento());
             dto.setSaldoInicial(movimiento.getCuenta().getSaldoInicial());
             dto.setEstado(movimiento.getCuenta().isEstado());
             dto.setMovimiento(movimiento.getValor());

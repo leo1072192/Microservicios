@@ -43,6 +43,10 @@
 //         cliente.setContrasena("password123");
 //         cliente.setEstado(true);
 //     }
+//  pruebas control de ex, cleinte persona cedula cuenta con la persona cedula, cliente movimiento nuemero de cuenta
+
+
+
 
 //     @Test
 //     public void testGetClienteById() throws Exception {

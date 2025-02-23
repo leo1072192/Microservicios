@@ -46,7 +46,7 @@ services:
       - db
     environment:
       - EUREKA_SERVER_URL=http://discovery-server:8761/eureka/
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/db_tata
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/db_banco
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=leo
     networks:
@@ -60,7 +60,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: leo
-      POSTGRES_DB: db_tata
+      POSTGRES_DB: db_banco
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:

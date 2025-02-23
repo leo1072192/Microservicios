@@ -25,6 +25,7 @@ public class ReporteMovimientoDTO {
     private String tipo;
     private BigDecimal saldoInicial;
     private boolean estado;
+    private String tipoMovimiento;
     private BigDecimal movimiento;
     private BigDecimal saldoDisponible;
     private String   cliente;

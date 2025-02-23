@@ -3,6 +3,8 @@ package com.tata.cuentasmovimientos.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tata.cuentasmovimientos.config.ClienteServiceClient;
+import com.tata.cuentasmovimientos.model.Cliente;
 import com.tata.cuentasmovimientos.model.Cuenta;
 import com.tata.cuentasmovimientos.model.Movimiento;
 import com.tata.cuentasmovimientos.repository.CuentaRepository;
@@ -20,11 +22,27 @@ public class CuentaService {
 
     @Autowired
     private MovimientoRepository movimientoRepository;
+  @Autowired
+    private ClienteServiceClient clienteServiceClient; 
 
     public Cuenta createCuenta(Cuenta cuenta) {
+        Long clienteid = cuenta.getClienteid();
+          Cliente cliente = clienteid != null ? clienteServiceClient.getClienteById(clienteid) : null;
+
+          // Verifica si ya existe una cuenta con el mismo número
+        if (cuentaRepository.findByNumeroCuenta(cuenta.getNumeroCuenta()) != null) {
+            throw new IllegalArgumentException("El número de cuenta ya existe.");
+        }
+        if (!cuenta.getTipoCuenta().equalsIgnoreCase("Ahorros") &&
+        !cuenta.getTipoCuenta().equalsIgnoreCase("Corriente")) {
+        throw new IllegalArgumentException("El tipo de cuenta no encontrada.");
+    }
+        
+        cuenta.setSaldo(cuenta.getSaldoInicial());
+
         return cuentaRepository.save(cuenta);
     }
-
+    
     public Cuenta updateCuenta(Long id, Cuenta cuenta) {
         if (cuentaRepository.existsById(id)) {
             cuenta.setId(id);

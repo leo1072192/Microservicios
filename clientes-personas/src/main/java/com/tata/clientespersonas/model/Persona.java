@@ -24,7 +24,7 @@ public class Persona {
   
     private int edad;
 
- 
+    @Column(unique = true, nullable = false) // Aseguramos que la identificación sea única y no nula
     private String identificacion;
 
     private String direccion;
